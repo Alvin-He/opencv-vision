@@ -4,14 +4,20 @@
 #include "opencv2/highgui.hpp"
 
 // config
-std::vector<int> HSV_UPPER_BOUND = {33, 255, 255};
-std::vector<int> HSV_LOWER_BOUND = {17, 106, 103};
+namespace HSV_BOUNDS {
+    std::vector<int> CONE_UPPER_BOUND = {33, 255, 255};
+    std::vector<int> CONE_LOWER_BOUND = {17, 106, 103};
+
+    std::vector<int> CUBE_UPPER_BOUND = {143, 255, 255};
+    std::vector<int> CUBE_LOWER_BOUND = {117, 44, 20};
+}; 
+
 
 int main(int, char **)
 {
     cv::VideoCapture cap(0);
     if (!cap.isOpened()) return -1;
-    cv::Mat frame, hslMasked;
+    cv::Mat frame, hsv, coneMasked, cubeMasked, hsvMasked;
     cv::namedWindow("Original Camera", cv::WINDOW_AUTOSIZE);
     cv::namedWindow("HSV Masked", cv::WINDOW_AUTOSIZE);
     while (true)
@@ -19,12 +25,15 @@ int main(int, char **)
         cap >> frame;
         cv::imshow("Original Camera", frame);
 
-        cv::cvtColor(frame, hslMasked, cv::COLOR_BGR2HSV); 
+        cv::cvtColor(frame, hsv, cv::COLOR_BGR2HSV); 
         // yellow HSL mask 
 
-        cv::inRange(hslMasked, HSV_LOWER_BOUND, HSV_UPPER_BOUND, hslMasked);
+        cv::inRange(hsv, HSV_BOUNDS::CONE_LOWER_BOUND, HSV_BOUNDS::CONE_UPPER_BOUND, coneMasked);
+        cv::inRange(hsv, HSV_BOUNDS::CUBE_LOWER_BOUND, HSV_BOUNDS::CUBE_UPPER_BOUND, cubeMasked);
 
-        cv::imshow("HSV Masked", hslMasked);
+        cv::add(coneMasked, cubeMasked, hsvMasked);  
+
+        cv::imshow("HSV Masked", hsvMasked);
 
         // cvtColor(frame, edges, COLOR_BGR2GRAY);
         // GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
