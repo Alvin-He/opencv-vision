@@ -9,13 +9,13 @@ namespace HSV_BOUNDS {
     std::vector<int> CONE_LOWER_BOUND = {17, 106, 103};
 
     std::vector<int> CUBE_UPPER_BOUND = {143, 255, 255};
-    std::vector<int> CUBE_LOWER_BOUND = {117, 44, 20};
+    std::vector<int> CUBE_LOWER_BOUND = {111, 62, 30};
 }; 
 
 
 int main(int, char **)
 {
-    cv::VideoCapture cap(0);
+    cv::VideoCapture cap(1);
     if (!cap.isOpened()) return -1;
     cv::Mat frame, hsv, coneMasked, cubeMasked, hsvMasked;
     cv::namedWindow("Original Camera", cv::WINDOW_AUTOSIZE);
