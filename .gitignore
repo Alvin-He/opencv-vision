@@ -1,6 +1,10 @@
 .vscode/**
 HsvRangeTool
 HsvRangeTool/**
+apriltag-3.2.0
+apriltag-3.2.0/**
+CMakeFiles
+CMakeFiles/**
 opencv
 opencv/**
 build

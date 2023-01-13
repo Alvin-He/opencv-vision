@@ -2,6 +2,7 @@
 #include <iostream>
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
+#include "opencv2/opencv.hpp"
 
 // config
 namespace HSV_BOUNDS {
@@ -15,7 +16,12 @@ namespace HSV_BOUNDS {
 
 int main(int, char **)
 {
-    cv::VideoCapture cap(1);
+    std::cout << "cuda enabled device count: \n"; 
+    std::cout << cv::cuda::getCudaEnabledDeviceCount()<< std::endl; 
+
+    
+
+    cv::VideoCapture cap(0);
     if (!cap.isOpened()) return -1;
     cv::Mat frame, hsv, coneMasked, cubeMasked, hsvMasked;
     cv::namedWindow("Original Camera", cv::WINDOW_AUTOSIZE);
