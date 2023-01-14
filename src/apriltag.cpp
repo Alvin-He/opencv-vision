@@ -24,7 +24,11 @@ int main(int argc, char const *argv[])
     apriltag::apriltag_detector_t *detector = apriltag::apriltag_detector_create(); 
     apriltag::apriltag_family_t *family = apriltag::tag16h5_create(); 
     apriltag::apriltag_detector_add_family(detector, family); 
-
+    // detector->quad_decimate = double(0.0); // 2.0
+    // detector->quad_sigma = double(0.0); 
+    // detector->debug = true; 
+    // detector->nthreads = 1; 
+    // detector->refine_edges = true; 
 
     cv::Mat origional, processed; 
 
@@ -32,7 +36,7 @@ int main(int argc, char const *argv[])
     {
         if (! capture.read(origional)) std::printf("failed to read frame"); 
         
-        cv::imshow("Origional", origional); 
+        // cv::imshow("Origional", origional); 
 
         cv::cvtColor(origional, processed, cv::COLOR_BGR2GRAY);
 
@@ -45,29 +49,33 @@ int main(int argc, char const *argv[])
 
         apriltag::zarray_t *detections = apriltag::apriltag_detector_detect(detector, &frameHeader); 
 
+        std::cout << apriltag::zarray_size(detections) << std::endl; 
+
         for (int i = 0; i < apriltag::zarray_size(detections); i++) {
             apriltag::apriltag_detection_t *detection; 
             apriltag::zarray_get(detections, i, detection);
 
 
+            
+
             // draw bounding boxes
-            { cv::line(origional, cv::Point(detection->p[0][0], detection->p[0][1]),
+            { cv::line(processed, cv::Point(detection->p[0][0], detection->p[0][1]),
                         cv::Point(detection->p[1][0], detection->p[1][1]),
                         cv::Scalar(0, 0xff, 0), 2);
-            cv::line(origional, cv::Point(detection->p[0][0], detection->p[0][1]),
+            cv::line(processed, cv::Point(detection->p[0][0], detection->p[0][1]),
                         cv::Point(detection->p[3][0], detection->p[3][1]),
                         cv::Scalar(0, 0, 0xff), 2);
-            cv::line(origional, cv::Point(detection->p[1][0], detection->p[1][1]),
+            cv::line(processed, cv::Point(detection->p[1][0], detection->p[1][1]),
                         cv::Point(detection->p[2][0], detection->p[2][1]),
                         cv::Scalar(0xff, 0, 0), 2);
-            cv::line(origional, cv::Point(detection->p[2][0], detection->p[2][1]),
+            cv::line(processed, cv::Point(detection->p[2][0], detection->p[2][1]),
                         cv::Point(detection->p[3][0], detection->p[3][1]),
                         cv::Scalar(0xff, 0, 0), 2);}
             
-            apriltag::apriltag_detection_destroy(detection); 
+            // apriltag::apriltag_detection_destroy(detection); 
         }
         // memory management
-        apriltag::image_u8_destroy(&frameHeader);
+        // apriltag::image_u8_destroy(&frameHeader);
         apriltag::apriltag_detections_destroy(detections);
 
         cv::imshow("Processed", processed);
