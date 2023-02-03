@@ -5,7 +5,7 @@ import cv2 as cv
 
 HSV_BOUNDS = {
     "CONE_UPPER_BOUND": (40, 255, 255), 
-    "CONE_LOWER_BOUND": (17, 71, 75)
+    "CONE_LOWER_BOUND": (17, 71, 100)
 }
 
 cap = cv.VideoCapture(0)
@@ -21,7 +21,8 @@ cv.namedWindow( "HSV Masked", cv.WINDOW_FREERATIO)
 cv.resizeWindow("HSV Masked", (500, 500))
 
 while True:
-    frame = cap.read()
+    _, frame = cap.read()
+    frame = cv.rotate(frame, cv.ROTATE_180)
     # frame = cv.imread("/home/alh/opencv-vision/78A09405-9EEE-42E1-9AA7-680E614515CD.jpg")
     
     cv.imshow("Original Camera", frame)
@@ -56,7 +57,8 @@ while True:
         if 3 > hull.size or hull.size > 13: continue
         boundingBox = cv.boundingRect(contour)
         if (boundingBox[2] * boundingBox[3]) <= 4000: continue
-        longerSideLength = boundingBox[2], shorterSideLength = boundingBox[3]
+        longerSideLength = boundingBox[2]
+        shorterSideLength = boundingBox[3]
         if shorterSideLength > longerSideLength: 
             longerSideLength = boundingBox[3]
             shorterSideLength = boundingBox[2]
@@ -74,7 +76,7 @@ while True:
     cv.imshow("Edges", contoursImage)
     # cv.waitKey()
     # break
-    # if (cv.waitKey(30) >= 0): break
+    if (cv.waitKey(30) >= 0): break
     
 
 exit(0)
