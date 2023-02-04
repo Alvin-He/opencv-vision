@@ -39,6 +39,8 @@ FIND_PACKAGE(OpenCV REQUIRED)
 add_executable(ConeDetection "./src/main.cpp")
 TARGET_LINK_LIBRARIES(ConeDetection ${OpenCV_LIBS})
 
+add_executable(Cuda "./src/cuda.cpp")
+target_link_libraries(Cuda ${OpenCV_LIBS})
 
 # add_executable(AprilTagDetection "./src/apriltag.cpp")
 # target_link_libraries(AprilTagDetection ${OpenCV_LIBS})
