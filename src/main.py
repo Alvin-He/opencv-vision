@@ -8,8 +8,8 @@ HSV_BOUNDS = {
     "CONE_LOWER_BOUND": (17, 71, 75)
 }
 
-cap = cv.VideoCapture(0)
-if (not cap.isOpened()): exit(1) 
+# cap = cv.VideoCapture(0)
+# if (not cap.isOpened()): exit(1) 
 
 cv.namedWindow("Original Camera", cv.WINDOW_FREERATIO)
 cv.resizeWindow("Original Camera", (500, 500))
@@ -21,9 +21,9 @@ cv.namedWindow( "HSV Masked", cv.WINDOW_FREERATIO)
 cv.resizeWindow("HSV Masked", (500, 500))
 
 while True:
-    frame = cap.read()
-    # frame = cv.imread("/home/alh/opencv-vision/78A09405-9EEE-42E1-9AA7-680E614515CD.jpg")
-    
+    # frame = cap.read()
+    frame = cv.imread("/home/alh/opencv-vision/78A09405-9EEE-42E1-9AA7-680E614515CD.jpg")
+    cv.convertScaleAbs(frame, frame, -1, 0.5)
     cv.imshow("Original Camera", frame)
     hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
     
@@ -72,8 +72,8 @@ while True:
         cv.rectangle(frame,  (bbox[0], bbox[1]), (bbox[0]+bbox[2], bbox[1]+bbox[3]), (30, 144, 255), 2)
     cv.imshow("Final", frame)
     cv.imshow("Edges", contoursImage)
-    # cv.waitKey()
-    # break
+    cv.waitKey()
+    break
     # if (cv.waitKey(30) >= 0): break
     
 
