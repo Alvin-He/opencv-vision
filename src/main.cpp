@@ -7,7 +7,7 @@ using namespace cv;
 // config
 namespace HSV_BOUNDS {
     std::vector<int> CONE_UPPER_BOUND = {40, 255, 255};
-    std::vector<int> CONE_LOWER_BOUND = {17, 71, 75};
+    std::vector<int> CONE_LOWER_BOUND = {17, 71, 100};
 
     std::vector<int> CUBE_UPPER_BOUND = {143, 255, 255};
     std::vector<int> CUBE_LOWER_BOUND = {111, 62, 30};
