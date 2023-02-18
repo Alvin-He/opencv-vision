@@ -2,7 +2,7 @@
 
 # import ntcore
 from networktables import NetworkTables
-import mainClass as ObjectDetector
+import ObjectDetector
 import cv2 as cv
 
 def updateNetworkObjDetect(results: ObjectDetector.DetectionResults):
@@ -13,15 +13,19 @@ def updateNetworkObjDetect(results: ObjectDetector.DetectionResults):
 
   xPoses = []
   yPoses = []
+  yawAngles = []
   for i in results.targets:
     xPoses.append(str(i.x))
     yPoses.append(str(i.y))
+    yawAngles.append(str(i.yaw))
 
   xStringData = ','.join(xPoses)
   yStringData = ','.join(yPoses)
+  yawStringData = ','.join(yawAngles)
 
   cones.putString("X_Values", xStringData)
   cones.putString("Y_Values", yStringData)
+  cones.putString("Yaw_Values", yawStringData)
 
 
 NetworkTables.initialize('10.46.69.2')
@@ -32,7 +36,7 @@ video = cv.VideoCapture(0)
 
 updateNetworkObjDetect(ObjectDetector.DetectionResults())
 
-detector = ObjectDetector.main()
+detector = ObjectDetector.Detector()
 
 while True:
   ret, image = video.read()
