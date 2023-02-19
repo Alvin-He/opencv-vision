@@ -10,11 +10,9 @@ HSV_BOUNDS = {
 
 
 class DetectionTarget:
-  def __init__(self, x: float, y: float, yawToTarget: float) -> None:
+  def __init__(self, yawToTarget: float) -> None:
     self.type = '' #unimplemented 
     self.yaw = yawToTarget
-    self.x = x
-    self.y = y
 
 
 class DetectionResults:
@@ -104,7 +102,7 @@ class Detector:
       cords = boundingBox.center()
       frameHeight, frameWidth, _ = frame.shape
       yawToTarget = calculateYaw(*cords, frameWidth, frameHeight)
-      results.append(DetectionTarget(*cords, yawToTarget))
+      results.append(DetectionTarget(yawToTarget))
 
     return results
     #output = frame * cv.cvtColor(coneMasked, cv.COLOR_GRAY2BGR)

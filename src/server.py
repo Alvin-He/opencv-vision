@@ -5,32 +5,23 @@ from networktables import NetworkTables
 import ObjectDetector
 import cv2 as cv
 
+NetworkTables.initialize('10.46.69.2')
+mainTable = NetworkTables.getTable("SmartDashboard/VisionServer")
+objTable = mainTable.getSubTable("Objects")
+
 def updateNetworkObjDetect(results: ObjectDetector.DetectionResults):
   objTable.putBoolean("HasTargets", results.hasTargets)
 
   cones = objTable.getSubTable("Cones")
   cubes = objTable.getSubTable("Cubes")
 
-  xPoses = []
-  yPoses = []
   yawAngles = []
   for i in results.targets:
-    xPoses.append(str(i.x))
-    yPoses.append(str(i.y))
     yawAngles.append(str(i.yaw))
 
-  xStringData = ','.join(xPoses)
-  yStringData = ','.join(yPoses)
   yawStringData = ','.join(yawAngles)
 
-  cones.putString("X_Values", xStringData)
-  cones.putString("Y_Values", yStringData)
   cones.putString("Yaw_Values", yawStringData)
-
-
-NetworkTables.initialize('10.46.69.2')
-mainTable = NetworkTables.getTable("SmartDashboard/VisionServer")
-objTable = mainTable.getSubTable("Objects")
 
 video = cv.VideoCapture(0)
 
